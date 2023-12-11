@@ -1,7 +1,15 @@
+using CustomerManagement.Web.DependencyInjections;
+using CustomerManagement.Domain.DependencyInjections;
+using CustomerManagement.Data.DependencyInjections;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.ResolveWebDependencies();
+builder.Services.ResolveDomainDependencies();
+builder.Services.ResolveDataDependencies();
 
 builder.Services.AddHttpClient();
 

@@ -28,6 +28,11 @@ namespace CustomerManagement.Domain.Services
             return await _customerRepository.GetByIdAsync(id);
         }
 
+        public async Task<IEnumerable<Customer>> GetAllAsync()
+        {
+            return await _customerRepository.GetAllAsync();
+        }
+
         public async Task RemoveAsync(int id)
         {
             await _customerRepository.RemoveAsync(id);
@@ -42,5 +47,7 @@ namespace CustomerManagement.Domain.Services
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

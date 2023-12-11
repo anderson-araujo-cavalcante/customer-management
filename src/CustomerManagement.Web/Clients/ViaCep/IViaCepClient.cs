@@ -1,4 +1,4 @@
-﻿namespace CustomerManagement.Web.Clients
+﻿namespace CustomerManagement.Web.Clients.ViaCep
 {
     public interface IViaCepClient
     {

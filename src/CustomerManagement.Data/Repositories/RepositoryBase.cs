@@ -30,6 +30,11 @@ namespace CustomerManagement.Data.Repositories
             return await query.AsNoTracking().ToListAsync();
         }
 
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
+        {
+            return await dbSet.AsNoTracking().ToListAsync();
+        }
+
         public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await dbSet.AsNoTracking().CountAsync(predicate);

@@ -17,7 +17,7 @@ builder.Services.AddHttpClient();
 
 builder.Services.AddHttpClient("ViaCepClient", httpClient =>
 {
-    httpClient.BaseAddress = new Uri("viacep.com.br/");
+    httpClient.BaseAddress = new Uri("http://viacep.com.br/");
 });
 
 var app = builder.Build();

@@ -2,6 +2,6 @@
 {
     public interface IViaCepClient
     {
-        //Task<Models.Product> GetAsync(int id);
+        Task<ViaCepResponse> GetAsync(string cep);
     }
 }

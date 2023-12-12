@@ -2,6 +2,7 @@
 using CustomerManagement.Domain.Interfaces.Services;
 using CustomerManagement.Web.Clients.ViaCep;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 
 namespace CustomerManagement.Web.Controllers
 {
@@ -16,9 +17,14 @@ namespace CustomerManagement.Web.Controllers
             _customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
             _viaCepClient = viaCepClient ?? throw new ArgumentNullException(nameof(viaCepClient));
         }
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string name,
+                                                                       string email)
         {
-            var result = await _customerService.GetAllAsync();
+            ViewData["NameFilter"] = name;
+            ViewData["EmailFilter"] = email;
+
+            var result = await _customerService.GetAllAsync(name, email);
+            //var result = await _customerService.GetAllAsync(x => (string.IsNullOrWhiteSpace(name) || x.Name.Contains(name)) || (string.IsNullOrWhiteSpace(email) || x.Email.Contains(email)));
             return View(result);
         }
 
@@ -91,6 +97,13 @@ namespace CustomerManagement.Web.Controllers
             {
                 return View();
             }
+        }
+
+        public async Task<ActionResult<ViaCepResponse>> ValidateCep(string cep)
+        {
+            var result = await _viaCepClient.GetAsync(cep);
+
+            return Ok(result);
         }
     }
 }

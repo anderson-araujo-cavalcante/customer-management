@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using CustomerManagement.Domain.Entities;
+using System.Linq.Expressions;
 
 namespace CustomerManagement.Domain.Interfaces.Repositories
 {
@@ -9,7 +10,7 @@ namespace CustomerManagement.Domain.Interfaces.Repositories
         Task UpdateAsync(TEntity entity);
         Task RemoveAsync(int entity);
         Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate);
-        Task<IEnumerable<TEntity>> GetAllAsync();
+        Task<IEnumerable<TEntity>> GetAllAsync();       
         void Dispose();
     }
 }

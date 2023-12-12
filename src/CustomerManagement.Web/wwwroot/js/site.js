@@ -3,22 +3,21 @@
 
 // Write your JavaScript code.
 
-JQuery(function () {
-    $("input[name=cep]").change(function () {
-        var cep_code = $(this).val();
-        if (cep_code.length <= 0) return;
-        $get("http://apps.widenet.com.br/busca-cep/api/cep.json", { code: cep_code }, function (result) {
-            if (result.status != 1) {
-                alert(result.message || "Houve um erro desconhecido");
-                return;
-            }
-            alert(result);
-            //$("input[name=cep]").val(result.code);
-            //$("input[name=estado]").val(result.state);
-            //$("input[name=cidade]").val(result.city);
-            //$("input[name=bairro]").val(result.district);
-            //$("input[name=endereco]").val(result.address);
-            )
-    }; 
-          )}; 
-        )}; 
+function CheckCep() {
+    $.ajax({
+        type: "GET",
+        url: "ValidateCep",
+        contentType: "application/json; charset=utf-8",
+        data: {
+            cep: $('#Cep').val()
+        },
+        success: function (result) {
+            $("#statusDiv").html("<i class='fa-light fa-circle-check fa-2x'></i>");
+            $("#dataDiv").html("<b>Logradouro:</b> " + result.logradouro + " <b>Bairro:</b> " + result.bairro + " <b>Localidade:</b> " + result.localidade);
+        },
+        error: function (xhr, status, error) {
+            $("#statusDiv").html("<i class='fa-light fa-circle-exclamation fa-2x'></i>");
+            $("#dataDiv").html("Result: " + status + " " + error + " " + xhr.status + " " + xhr.statusText)
+        }
+    });
+}

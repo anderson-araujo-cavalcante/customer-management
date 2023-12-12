@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.AddDbContext();
+builder.Services.MapperConfig();
 builder.Services.ResolveDataDependencies();
 builder.Services.ResolveWebDependencies();
 builder.Services.ResolveDomainDependencies();

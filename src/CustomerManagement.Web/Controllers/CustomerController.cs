@@ -1,6 +1,8 @@
-﻿using CustomerManagement.Domain.Entities;
+﻿using AutoMapper;
+using CustomerManagement.Domain.Entities;
 using CustomerManagement.Domain.Interfaces.Services;
 using CustomerManagement.Web.Clients.ViaCep;
+using CustomerManagement.Web.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 
@@ -10,12 +12,15 @@ namespace CustomerManagement.Web.Controllers
     {
         private readonly ICustomerService _customerService;
         private readonly IViaCepClient _viaCepClient;
+        private readonly IMapper _mapper;
 
         public CustomerController(ICustomerService customerService,
-                                                    IViaCepClient viaCepClient)
+                                                    IViaCepClient viaCepClient,
+                                                    IMapper mapper)
         {
             _customerService = customerService ?? throw new ArgumentNullException(nameof(customerService));
             _viaCepClient = viaCepClient ?? throw new ArgumentNullException(nameof(viaCepClient));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
         public async Task<ActionResult> Index(string name,
                                                                        string email)
@@ -24,30 +29,27 @@ namespace CustomerManagement.Web.Controllers
             ViewData["EmailFilter"] = email;
 
             var result = await _customerService.GetAllAsync(name, email);
-            //var result = await _customerService.GetAllAsync(x => (string.IsNullOrWhiteSpace(name) || x.Name.Contains(name)) || (string.IsNullOrWhiteSpace(email) || x.Email.Contains(email)));
-            return View(result);
+            return View(_mapper.Map<IEnumerable<CustomerDTO>>(result));
         }
 
         public async Task<ActionResult> Details(int id)
         {
             var result = await _customerService.GetByIdAsync(id);
-            return View(result);
+            return View(_mapper.Map<CustomerDTO>(result));
         }
 
         public ActionResult Create()
         {
-            //var categories = await _productClient.GetAllCategoriesAsync();
-            //ViewBag.Categories = categories.Select(_ => new SelectListItem() { Text = _.Name, Value = _.Id.ToString() });
-            return View(new Customer());
+            return View(new CustomerDTO());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Customer customer)
+        public async Task<ActionResult> Create(CustomerDTO customer)
         {
             try
             {
-                await _customerService.AddAsync(customer);
+                await _customerService.AddAsync(_mapper.Map<Customer>(customer));
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -58,18 +60,17 @@ namespace CustomerManagement.Web.Controllers
 
         public async Task<ActionResult> Edit(int id)
         {
-            // await CreateViewBagCategoriesAsync();
             var result = await _customerService.GetByIdAsync(id);
-            return View(result);
+            return View(_mapper.Map<CustomerDTO>(result));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(Customer customer)
+        public async Task<ActionResult> Edit(CustomerDTO customer)
         {
             try
             {
-                await _customerService.UpdateAsync(customer);
+                await _customerService.UpdateAsync(_mapper.Map<Customer>(customer));
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -81,7 +82,7 @@ namespace CustomerManagement.Web.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             var result = await _customerService.GetByIdAsync(id);
-            return View(result);
+            return View(_mapper.Map<CustomerDTO>(result));
         }
 
         [HttpPost]
@@ -101,7 +102,7 @@ namespace CustomerManagement.Web.Controllers
 
         public async Task<ActionResult<ViaCepResponse>> ValidateCep(string cep)
         {
-            var result = await _viaCepClient.GetAsync(cep);
+            var result = await _viaCepClient.GetAsync(cep.Replace("-",""));
 
             return Ok(result);
         }

@@ -1,4 +1,5 @@
-﻿@model CustomerManagement.Domain.Entities.Customer
+﻿@using CustomerManagement.Web.DTOs
+@model CustomerDTO
 
 @{
     ViewData["Title"] = "Edit";
@@ -37,6 +38,7 @@
                 <input asp-for="Cep" class="form-control" />
                 <span asp-validation-for="Cep" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

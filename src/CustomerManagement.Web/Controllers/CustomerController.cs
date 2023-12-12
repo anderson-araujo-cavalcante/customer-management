@@ -102,7 +102,7 @@ namespace CustomerManagement.Web.Controllers
 
         public async Task<ActionResult<ViaCepResponse>> ValidateCep(string cep)
         {
-            var result = await _viaCepClient.GetAsync(cep.Replace("-",""));
+            var result = await _viaCepClient.GetAsync(cep);
 
             return Ok(result);
         }

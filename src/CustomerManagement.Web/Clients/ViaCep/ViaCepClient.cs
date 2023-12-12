@@ -19,7 +19,7 @@ namespace CustomerManagement.Web.Clients.ViaCep
             if(string.IsNullOrWhiteSpace(cep)) throw new Exception($"ViaCep: Informa CEP válido.");
 
             var client = _clientFactory.CreateClient("ViaCepClient");
-            string apiUrl = $"/ws/{cep}/json";
+            string apiUrl = $"/ws/{cep.Replace("-", "")}/json";
             try
             {
                 var response = await client.GetAsync(apiUrl);

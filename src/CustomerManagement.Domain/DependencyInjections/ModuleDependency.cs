@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CustomerManagement.Domain.DependencyInjections
 {
-    public static class ModuleDependency2
+    public static class ModuleDependency
     {
         public static void ResolveDomainDependencies(this IServiceCollection services)
         {

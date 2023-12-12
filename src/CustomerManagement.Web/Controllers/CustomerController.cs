@@ -28,7 +28,7 @@ namespace CustomerManagement.Web.Controllers
             return View(result);
         }
 
-        public async Task<ActionResult> Create()
+        public ActionResult Create()
         {
             //var categories = await _productClient.GetAllCategoriesAsync();
             //ViewBag.Categories = categories.Select(_ => new SelectListItem() { Text = _.Name, Value = _.Id.ToString() });
